@@ -67,35 +67,46 @@
         <input id="input" autocomplete="off" /><button>Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
-    <script>var socket = io();
-    var form = document.getElementById('form');
-    var input = document.getElementById('input');
-    var messages = document.getElementById('messages');
+    <script>
+        var socket = io();
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+        var messages = document.getElementById('messages');
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if(input.value) {
-            socket.emit('chat message', input.value);
-            input.value = '';
-        }
-    });
+        // Ask user to enter nickname
+        var user = window.prompt('Please enter your nickname: ');
 
-    socket.emit('user connected');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', user, input.value);
+                input.value = '';
+            }
+        });
+        // Trigger user connected
+        socket.emit('user connected', user);
 
-    socket.on('user connected', function() {
-        var item = document.createElement('li');
-        item.textContent = 'User connected';
-        messages.appendChild(item);
-    })
+        socket.on('user connected', function (user) {
+            var item = document.createElement('li');
+            item.textContent = `User ${user} has connected`;
+            messages.appendChild(item);
+        })
 
-    socket.on('chat message', function(msg) {
-        var item = document.createElement('li');
-        console.log('Entro con el mensaje ', msg);
-        item.textContent = msg;
-        console.log('el mensaje ', msg);
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-    });
+        socket.on('chat message', function (user, msg) {
+            var item = document.createElement('li');
+            item.textContent = `${user}: ${msg}`;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        // User disconnected
+        socket.on('disconnected', function (user) {
+            var item = document.createElement('li');
+            item.textContent = `${user} has disconnected`;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
     </script>
 </body>
 

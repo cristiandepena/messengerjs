@@ -8,16 +8,18 @@ app.get('/', (req,res)=> {
 
 io.on('connection', (socket) => {
     // Connected
-    console.log('User connected');
-    io.emit('user connected');
+    socket.on('user connected', (user) => {
+        socket.user = user;
+        io.emit('user connected', user);
+    });
 
     // Receive message
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    socket.on('chat message', (user, msg) => {
+        socket.broadcast.emit('chat message', user, msg);
     });
     // Disconnected
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        io.emit('disconnected', socket.user);
     });
 });
 
