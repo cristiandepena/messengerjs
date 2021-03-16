@@ -1,0 +1,25 @@
+{
+  "name": "messengerjs",
+  "version": "1.0.0",
+  "description": "A Chat App based on Socket.io mimicking the good old MSN Messenger for practical purposes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristiandepena/messengerjs.git"
+  },
+  "author": "Cristian A. De Peña",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristiandepena/messengerjs/issues"
+  },
+  "homepage": "https://github.com/cristiandepena/messengerjs#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.0.0"
+  }
+}
